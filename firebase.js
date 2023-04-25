@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+var firebase = require("firebase/app");
 const {
   getDatabase,
   ref,
@@ -9,7 +9,10 @@ const {
   push,
   child,
 } = require("firebase/database");
-import { getStorage, uploadBytes, ref as sRef } from "firebase/storage";
+const { getStorage, getDownloadURL } = require("firebase/storage");
+const { ref: sRef } = require("firebase/storage");
+// var sadbed = require("./random.jpg");
+// const { getImageInDb } = require("./storage");
 
 const firebaseConfig = {
   apiKey: "AIzaSyDW5f707W16ftUpvJ7h1n-M2GrM-hFzZZw",
@@ -21,19 +24,34 @@ const firebaseConfig = {
   measurementId: "G-QE3L0T5Z7P",
 };
 
-const firebase = initializeApp(firebaseConfig);
-const database = getDatabase(firebase);
+firebase.initializeApp(firebaseConfig);
+const database = getDatabase();
+const storage = getStorage();
 //creating a root reference
-const storage = getStorage(firebase);
+// const storage = getStorage(firebase);
 
-getImageFromPi = async (data) => {
-  //fill this in when we know more about how we'll be receiving an image
+const getImageInDb = async () => {
+  const storageRef = sRef(storage, `random.jpg`);
+  getDownloadURL(storageRef).then((url) => {
+    console.log(url);
+  });
 };
 
-putImageInDb = async (image) => {
-  const storageRef = sRef(storage, `image.jpg`);
-  await uploadBytes(storageRef, file);
-  console.log("uploaded image");
-};
-
-export { database, firebase, storage };
+setInterval(function () {
+  set(ref(database, "lightOneInterval"), 0.5);
+  set(ref(database, "lightTwoInterval"), 0.5);
+  set(ref(database, "lightThreeInterval"), 0.5);
+  set(ref(database, "lightFourInterval"), 0.5);
+  set(ref(database, "numCarsOne"), 0.5);
+  set(ref(database, "numCarsTwo"), 0.5);
+  set(ref(database, "numCarsThree"), 0.5);
+  set(ref(database, "numCarsFour"), 0.5);
+  get(ref(database)).then((snapshot) => {
+    console.log(snapshot.val().useEmergPath);
+    if (snapshot.val().useEmergPath === true) {
+      //do something, this already gets the new path as well
+      //probably just set the path
+    }
+  });
+  getImageInDb();
+}, 3000);
