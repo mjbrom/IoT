@@ -9,10 +9,11 @@ const {
   push,
   child,
 } = require("firebase/database");
-const { getStorage, getDownloadURL } = require("firebase/storage");
+const { getStorage, getDownloadURL, getBlob, getBytes } = require("firebase/storage");
 const { ref: sRef } = require("firebase/storage");
 // var sadbed = require("./random.jpg");
 // const { getImageInDb } = require("./storage");
+const fs = require("fs")
 
 const firebaseConfig = {
   apiKey: "AIzaSyDW5f707W16ftUpvJ7h1n-M2GrM-hFzZZw",
@@ -37,6 +38,19 @@ const getImageInDb = async () => {
     console.log(url);
     storeImage = url;
   });
+  getBytes(storageRef).then((snapshot) => {
+    var imageBuffer = new Uint8Array(snapshot)
+    fs.appendFile('./image.jpg', Buffer.from(imageBuffer), function (err) {
+      if (err) {
+        // fut.throw(err);
+        console.log(err)
+      } else {
+        // fut.return(chunk.length);
+        console.log("File created!")
+      }
+    });
+  });
+
 };
 
 setInterval(function () {
