@@ -36,7 +36,7 @@ const getImageInDb = async () => {
   const storageRef = sRef(storage, `image.jpg`);
   getBytes(storageRef).then((snapshot) => {
     var imageBuffer = new Uint8Array(snapshot)
-    fs.writeFile('./image.jpg', Buffer.from(imageBuffer), function (err) {
+    fs.writeFile('./images/image.jpg', Buffer.from(imageBuffer), function (err) {
       if (err) {
         // fut.throw(err);
         console.log(err)
