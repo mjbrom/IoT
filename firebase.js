@@ -34,10 +34,6 @@ let storeImage = "";
 
 const getImageInDb = async () => {
   const storageRef = sRef(storage, `image.jpg`);
-  getDownloadURL(storageRef).then((url) => {
-    console.log(url);
-    storeImage = url;
-  });
   getBytes(storageRef).then((snapshot) => {
     var imageBuffer = new Uint8Array(snapshot)
     fs.appendFile('./image.jpg', Buffer.from(imageBuffer), function (err) {
@@ -63,7 +59,6 @@ setInterval(function () {
   set(ref(database, "numCarsThree"), 0.5);
   set(ref(database, "numCarsFour"), 0.5);
   get(ref(database)).then((snapshot) => {
-    console.log(snapshot.val().useEmergPath);
     if (snapshot.val().useEmergPath === true) {
       //do something, this already gets the new path as well
       //probably just set the path
