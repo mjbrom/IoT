@@ -1,5 +1,7 @@
 var firebase = require("firebase/app");
 const { getStorage, uploadBytes, ref } = require("firebase/storage");
+var fs = require('fs').promises;
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDW5f707W16ftUpvJ7h1n-M2GrM-hFzZZw",
@@ -14,9 +16,21 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const storage = getStorage();
 
+
 const putImageInDb = async (file) => {
   const storageRef = ref(storage, `image.jpg`);
   //RIGHT NOW FILE IS NOTHING
   //make sure to have something sent into this function, and replace the file variable
   await uploadBytes(storageRef, file);
 };
+
+const testImage = async () => {
+  let img = await fs.readFile("./img.jpg")
+  console.log(img)
+  putImageInDb(img)
+
+}
+
+testImage()
+
+
