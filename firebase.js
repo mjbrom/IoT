@@ -29,11 +29,13 @@ const database = getDatabase();
 const storage = getStorage();
 //creating a root reference
 // const storage = getStorage(firebase);
+let storeImage = "";
 
 const getImageInDb = async () => {
-  const storageRef = sRef(storage, `random.jpg`);
+  const storageRef = sRef(storage, `image.jpg`);
   getDownloadURL(storageRef).then((url) => {
     console.log(url);
+    storeImage = url;
   });
 };
 
@@ -54,4 +56,4 @@ setInterval(function () {
     }
   });
   getImageInDb();
-}, 3000);
+}, 5000);
