@@ -26,7 +26,6 @@ const putImageInDb = async (file) => {
 
 const testImage = async () => {
   let img = await fs.readFile("/home/pi/Images/test.jpg")
-  console.log(img)
   putImageInDb(img)
 
 }
