@@ -92,7 +92,7 @@ const runLights = async () => {
     while (true) {
         let intervals = []
         get(ref(database)).then((snapshot) => {
-            // console.log(snapshot.val())
+            console.log(snapshot.val().lightOneInterval)
             intervals = [
                 snapshot.val().lightOneInterval,
                 snapshot.val().lightTwoInterval,
@@ -100,7 +100,7 @@ const runLights = async () => {
                 snapshot.val().lightFourInterval
             ]
         });
-        console.log(intervals)
+        // console.log(intervals)
         for (let i = 0; i < 4; i++) {
             if (i === 0) {
                 red1.writeSync(1)
