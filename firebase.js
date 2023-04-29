@@ -11,9 +11,33 @@ const {
 } = require("firebase/database");
 const { getStorage, getDownloadURL, getBlob, getBytes } = require("firebase/storage");
 const { ref: sRef } = require("firebase/storage");
-// var sadbed = require("./random.jpg");
-// const { getImageInDb } = require("./storage");
 const fs = require("fs")
+const gpio = require('onoff').Gpio
+
+const lightPins = {
+  up: {
+    red: new gpio(9, 'out'),
+    yellow: new gpio(10, 'out'),
+    green: new gpio(11, 'out'),
+  },
+  right: {
+    red: new gpio(16, 'out'),
+    yellow: new gpio(20, 'out'),
+    green: new gpio(21, 'out'),
+  },
+  down: {
+    red: new gpio(14, 'out'),
+    yellow: new gpio(15, 'out'),
+    green: new gpio(18, 'out'),
+  },
+  left: {
+    red: new gpio(1, 'out'),
+    yellow: new gpio(7, 'out'),
+    green: new gpio(8, 'out'),
+  }
+}
+
+let intervals = []
 
 const firebaseConfig = {
   apiKey: "AIzaSyDW5f707W16ftUpvJ7h1n-M2GrM-hFzZZw",
@@ -28,8 +52,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = getDatabase();
 const storage = getStorage();
-let setInt = setInterval()
-
+// let databaseValues = {};
+// let setInt = setInterval()
 const getImageInDb = async () => {
   const storageRef = sRef(storage, `image.jpg`);
   getBytes(storageRef).then((snapshot) => {
@@ -56,21 +80,29 @@ const getImageInDb = async () => {
 // })
 
 
-
 setInterval(function () {
-  set(ref(database, "lightOneInterval"), 0.5);
-  set(ref(database, "lightTwoInterval"), 0.5);
-  set(ref(database, "lightThreeInterval"), 0.5);
-  set(ref(database, "lightFourInterval"), 0.5);
-  set(ref(database, "numCarsOne"), 0.5);
-  set(ref(database, "numCarsTwo"), 0.5);
-  set(ref(database, "numCarsThree"), 0.5);
-  set(ref(database, "numCarsFour"), 0.5);
-  get(ref(database)).then((snapshot) => {
-    if (snapshot.val().useEmergPath === true) {
-      //do something, this already gets the new path as well
-      //probably just set the path
-    }
-  });
+  let rawData = fs.readFileSync("trafic_light_update.json")
+  let values = JSON.parse(rawData)
+  set(ref(database, "lightOneInterval"), parseFloat(values?.lightOneInterval));
+  set(ref(database, "lightTwoInterval"), parseFloat(values?.lightTwoInterval));
+  set(ref(database, "lightThreeInterval"), parseFloat(values?.lightThreeInterval));
+  set(ref(database, "lightFourInterval"), parseFloat(values?.lightFourInterval));
+  set(ref(database, "numCarsOne"), parseFloat(values?.numCarsOne));
+  set(ref(database, "numCarsTwo"), parseFloat(values?.numCarsTwo));
+  set(ref(database, "numCarsThree"), parseFloat(values?.numCarsThree));
+  set(ref(database, "numCarsFour"), parseFloat(values?.numCarsFour));
+  // get(ref(database)).then((snapshot) => {
+  //   let databaseValues = snapshot.val()
+  //   intervals = [
+  //     databaseValues.lightOneInterval,
+  //     databaseValues.lightTwoInterval,
+  //     databaseValues.lightThreeInterval,
+  //     databaseValues.lightFourInterval
+  //   ]
+  //   if (snapshot.val().useEmergPath === true) {
+  //     //do something, this already gets the new path as well
+  //     //probably just set the path
+  //   }
+  // });
   getImageInDb();
 }, 5000);
