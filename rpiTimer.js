@@ -80,15 +80,67 @@ const runLights = async () => {
             ]
         });
         flag = 0;
+        const red = new gpio(9, 'out')
+        const yellow = new gpio(10, 'out')
+        const green = new gpio(11, 'out')
+        const red1 = new gpio(16, 'out')
+        const yellow1 = new gpio(20, 'out')
+        const green1 = new gpio(21, 'out')
+        const red2 = new gpio(14, 'out')
+        const yellow2 = new gpio(15, 'out')
+        const green2 = new gpio(18, 'out')
+        const red3 = new gpio(1, 'out')
+        const yellow3 = new gpio(7, 'out')
+        const green3 = new gpio(8, 'out')
         for (const light in lightPins) {
-            light.red.writeSync(0)
-            light.green.writeSync(1)
-            await sleep(intervals[flag] * 1000)
-            light.green.writeSync(0)
-            light.yellow.writeSync(1)
-            await sleep(1000)
-            light.yellow.writeSync(0)
-            light.red.writeSync(1)
+            if (flag === 0) {
+                red.writeSync(0)
+                green.writeSync(1)
+                await sleep(intervals[flag] * 1000)
+                green.writeSync(0)
+                yellow.writeSync(1)
+                await sleep(1000)
+                yellow.writeSync(0)
+                red.writeSync(1)
+            }
+            else if (flag === 1) {
+                red1.writeSync(0)
+                green1.writeSync(1)
+                await sleep(intervals[flag] * 1000)
+                green1.writeSync(0)
+                yellow1.writeSync(1)
+                await sleep(1000)
+                yellow1.writeSync(0)
+                red1.writeSync(1)
+            }
+            else if (flag === 2) {
+                red2.writeSync(0)
+                green2.writeSync(1)
+                await sleep(intervals[flag] * 1000)
+                green2.writeSync(0)
+                yellow2.writeSync(1)
+                await sleep(1000)
+                yellow2.writeSync(0)
+                red2.writeSync(1)
+            }
+            else {
+                red3.writeSync(0)
+                green3.writeSync(1)
+                await sleep(intervals[flag] * 1000)
+                green3.writeSync(0)
+                yellow3.writeSync(1)
+                await sleep(1000)
+                yellow3.writeSync(0)
+                red3.writeSync(1)
+            }
+            // light.red.writeSync(0)
+            // light.green.writeSync(1)
+            // await sleep(intervals[flag] * 1000)
+            // light.green.writeSync(0)
+            // light.yellow.writeSync(1)
+            // await sleep(1000)
+            // light.yellow.writeSync(0)
+            // light.red.writeSync(1)
 
             flag++;
         }
