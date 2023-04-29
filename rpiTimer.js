@@ -102,7 +102,6 @@ const runLights = async () => {
                 databaseValues.lightFourInterval
             ]
         });
-        flag = 0;
         const red = new gpio(9, 'out')
         const yellow = new gpio(10, 'out')
         const green = new gpio(11, 'out')
@@ -115,31 +114,40 @@ const runLights = async () => {
         const red3 = new gpio(1, 'out')
         const yellow3 = new gpio(7, 'out')
         const green3 = new gpio(8, 'out')
-        for (const light in lightPins) {
-            if (flag === 0) {
+        for (let i = 0; i < 4; i++) {
+            if (i === 0) {
+                red1.writeSync(1)
+                red2.writeSync(1)
+                red3.writeSync(1)
                 red.writeSync(0)
                 green.writeSync(1)
-                await sleep(intervals[flag] * 1000)
+                await sleep(intervals[i] * 1000)
                 green.writeSync(0)
                 yellow.writeSync(1)
                 await sleep(1000)
                 yellow.writeSync(0)
                 red.writeSync(1)
             }
-            else if (flag === 1) {
+            else if (i === 1) {
+                red.writeSync(1)
+                red2.writeSync(1)
+                red3.writeSync(1)
                 red1.writeSync(0)
                 green1.writeSync(1)
-                await sleep(intervals[flag] * 1000)
+                await sleep(intervals[i] * 1000)
                 green1.writeSync(0)
                 yellow1.writeSync(1)
                 await sleep(1000)
                 yellow1.writeSync(0)
                 red1.writeSync(1)
             }
-            else if (flag === 2) {
+            else if (i === 2) {
+                red1.writeSync(1)
+                red.writeSync(1)
+                red3.writeSync(1)
                 red2.writeSync(0)
                 green2.writeSync(1)
-                await sleep(intervals[flag] * 1000)
+                await sleep(intervals[i] * 1000)
                 green2.writeSync(0)
                 yellow2.writeSync(1)
                 await sleep(1000)
@@ -147,25 +155,18 @@ const runLights = async () => {
                 red2.writeSync(1)
             }
             else {
+                red1.writeSync(1)
+                red2.writeSync(1)
+                red.writeSync(1)
                 red3.writeSync(0)
                 green3.writeSync(1)
-                await sleep(intervals[flag] * 1000)
+                await sleep(intervals[i] * 1000)
                 green3.writeSync(0)
                 yellow3.writeSync(1)
                 await sleep(1000)
                 yellow3.writeSync(0)
                 red3.writeSync(1)
             }
-            // light.red.writeSync(0)
-            // light.green.writeSync(1)
-            // await sleep(intervals[flag] * 1000)
-            // light.green.writeSync(0)
-            // light.yellow.writeSync(1)
-            // await sleep(1000)
-            // light.yellow.writeSync(0)
-            // light.red.writeSync(1)
-
-            flag++;
         }
 
     }
