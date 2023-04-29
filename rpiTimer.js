@@ -93,6 +93,7 @@ const runLights = async () => {
         let intervals = []
         get(ref(database)).then((snapshot) => {
             let databaseValues = snapshot.val()
+            console.log(snapshot.val())
             intervals = [
                 databaseValues.lightOneInterval,
                 databaseValues.lightTwoInterval,
