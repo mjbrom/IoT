@@ -60,10 +60,33 @@ const sleep = (howLong) => {
 }
 
 const setupLights = async () => {
+    flag = 0;
+    const red = new gpio(9, 'out')
+    const yellow = new gpio(10, 'out')
+    const green = new gpio(11, 'out')
+    const red1 = new gpio(16, 'out')
+    const yellow1 = new gpio(20, 'out')
+    const green1 = new gpio(21, 'out')
+    const red2 = new gpio(14, 'out')
+    const yellow2 = new gpio(15, 'out')
+    const green2 = new gpio(18, 'out')
+    const red3 = new gpio(1, 'out')
+    const yellow3 = new gpio(7, 'out')
+    const green3 = new gpio(8, 'out')
     for (const light in lightPins) {
-        light.red.writeSync(1)
-        light.yellow.writeSync(0)
-        light.green.writeSync(0)
+        if (flag === 0) {
+            red.writeSync(1)
+        }
+        else if (flag === 1) {
+            red1.writeSync(1)
+        }
+        else if (flag === 2) {
+            red2.writeSync(1)
+        }
+        else {
+            red3.writeSync(1)
+        }
+        flag++;
     }
 }
 
