@@ -50,8 +50,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = getDatabase();
 const storage = getStorage();
-// let databaseValues = {};
-// let setInt = setInterval()
 const red = new gpio(9, 'out')
 const yellow = new gpio(10, 'out')
 const green = new gpio(11, 'out')
@@ -66,6 +64,7 @@ const yellow3 = new gpio(7, 'out')
 const green3 = new gpio(8, 'out')
 
 const sleep = (howLong) => {
+    console.log(howLong)
     return new Promise((resolve) => {
         setTimeout(resolve, howLong)
     })
@@ -101,6 +100,7 @@ const runLights = async () => {
                 databaseValues.lightFourInterval
             ]
         });
+        console.log(intervals)
         for (let i = 0; i < 4; i++) {
             if (i === 0) {
                 red1.writeSync(1)
