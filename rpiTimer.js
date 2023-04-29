@@ -90,70 +90,71 @@ const setupLights = async () => {
 
 const runLights = async () => {
     while (true) {
-        get(ref(database)).then(async (snapshot) => {
+        let intervals = []
+        get(ref(database)).then((snapshot) => {
             // console.log(snapshot.val())
-            // intervals = [
-            //     snapshot.val().lightOneInterval,
-            //     snapshot.val().lightTwoInterval,
-            //     snapshot.val().lightThreeInterval,
-            //     snapshot.val().lightFourInterval
-            // ]
-            for (let i = 0; i < 4; i++) {
-                if (i === 0) {
-                    red1.writeSync(1)
-                    red2.writeSync(1)
-                    red3.writeSync(1)
-                    red.writeSync(0)
-                    green.writeSync(1)
-                    await sleep(snapshot.val().lightOneInterval * 1000)
-                    green.writeSync(0)
-                    yellow.writeSync(1)
-                    await sleep(1000)
-                    yellow.writeSync(0)
-                    red.writeSync(1)
-                }
-                else if (i === 1) {
-                    red.writeSync(1)
-                    red2.writeSync(1)
-                    red3.writeSync(1)
-                    red1.writeSync(0)
-                    green1.writeSync(1)
-                    await sleep(snapshot.val().lightTwoInterval * 1000)
-                    green1.writeSync(0)
-                    yellow1.writeSync(1)
-                    await sleep(1000)
-                    yellow1.writeSync(0)
-                    red1.writeSync(1)
-                }
-                else if (i === 2) {
-                    red1.writeSync(1)
-                    red.writeSync(1)
-                    red3.writeSync(1)
-                    red2.writeSync(0)
-                    green2.writeSync(1)
-                    await sleep(snapshot.val().lightThreeInterval * 1000)
-                    green2.writeSync(0)
-                    yellow2.writeSync(1)
-                    await sleep(1000)
-                    yellow2.writeSync(0)
-                    red2.writeSync(1)
-                }
-                else {
-                    red1.writeSync(1)
-                    red2.writeSync(1)
-                    red.writeSync(1)
-                    red3.writeSync(0)
-                    green3.writeSync(1)
-                    await sleep(snapshot.val().lightFourInterval * 1000)
-                    green3.writeSync(0)
-                    yellow3.writeSync(1)
-                    await sleep(1000)
-                    yellow3.writeSync(0)
-                    red3.writeSync(1)
-                }
-            }
+            intervals = [
+                snapshot.val().lightOneInterval,
+                snapshot.val().lightTwoInterval,
+                snapshot.val().lightThreeInterval,
+                snapshot.val().lightFourInterval
+            ]
         });
-
+        console.log(intervals)
+        for (let i = 0; i < 4; i++) {
+            if (i === 0) {
+                red1.writeSync(1)
+                red2.writeSync(1)
+                red3.writeSync(1)
+                red.writeSync(0)
+                green.writeSync(1)
+                await sleep(intervals[i] * 1000)
+                green.writeSync(0)
+                yellow.writeSync(1)
+                await sleep(1000)
+                yellow.writeSync(0)
+                red.writeSync(1)
+            }
+            else if (i === 1) {
+                red.writeSync(1)
+                red2.writeSync(1)
+                red3.writeSync(1)
+                red1.writeSync(0)
+                green1.writeSync(1)
+                await sleep(intervals[i] * 1000)
+                green1.writeSync(0)
+                yellow1.writeSync(1)
+                await sleep(1000)
+                yellow1.writeSync(0)
+                red1.writeSync(1)
+            }
+            else if (i === 2) {
+                red1.writeSync(1)
+                red.writeSync(1)
+                red3.writeSync(1)
+                red2.writeSync(0)
+                green2.writeSync(1)
+                await sleep(intervals[i] * 1000)
+                green2.writeSync(0)
+                yellow2.writeSync(1)
+                await sleep(1000)
+                yellow2.writeSync(0)
+                red2.writeSync(1)
+            }
+            else {
+                red1.writeSync(1)
+                red2.writeSync(1)
+                red.writeSync(1)
+                red3.writeSync(0)
+                green3.writeSync(1)
+                await sleep(intervals[i] * 1000)
+                green3.writeSync(0)
+                yellow3.writeSync(1)
+                await sleep(1000)
+                yellow3.writeSync(0)
+                red3.writeSync(1)
+            }
+        }
 
     }
 }
