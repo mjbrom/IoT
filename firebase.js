@@ -12,32 +12,7 @@ const {
 const { getStorage, getDownloadURL, getBlob, getBytes } = require("firebase/storage");
 const { ref: sRef } = require("firebase/storage");
 const fs = require("fs")
-const gpio = require('onoff').Gpio
 
-const lightPins = {
-  up: {
-    red: new gpio(9, 'out'),
-    yellow: new gpio(10, 'out'),
-    green: new gpio(11, 'out'),
-  },
-  right: {
-    red: new gpio(16, 'out'),
-    yellow: new gpio(20, 'out'),
-    green: new gpio(21, 'out'),
-  },
-  down: {
-    red: new gpio(14, 'out'),
-    yellow: new gpio(15, 'out'),
-    green: new gpio(18, 'out'),
-  },
-  left: {
-    red: new gpio(1, 'out'),
-    yellow: new gpio(7, 'out'),
-    green: new gpio(8, 'out'),
-  }
-}
-
-let intervals = []
 
 const firebaseConfig = {
   apiKey: "AIzaSyDW5f707W16ftUpvJ7h1n-M2GrM-hFzZZw",
