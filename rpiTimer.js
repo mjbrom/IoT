@@ -109,5 +109,4 @@ process.on('SIGINT', () => {
 })
 
 setupLights()
-await sleep(5000)
 runLights()
