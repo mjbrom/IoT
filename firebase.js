@@ -80,4 +80,4 @@ setInterval(function () {
   //   }
   // });
   getImageInDb();
-}, 5000);
+}, 10000);
