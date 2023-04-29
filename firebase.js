@@ -54,48 +54,6 @@ const database = getDatabase();
 const storage = getStorage();
 // let databaseValues = {};
 // let setInt = setInterval()
-
-const sleep = (howLong) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, howLong)
-  })
-}
-
-const setupLights = async () => {
-  for (const light in lightPins) {
-    light.red.writeSync(1)
-    light.yellow.writeSync(0)
-    light.green.writeSync(0)
-  }
-}
-
-const runLights = async () => {
-  flag = 0;
-  for (const light in lightPins) {
-    light.red.writeSync(0)
-    light.green.writeSync(1)
-    await sleep(intervals[flag] * 1000)
-    light.green.writeSync(0)
-    light.yellow.writeSync(1)
-    await sleep(1000)
-    light.yellow.writeSync(0)
-    light.red.writeSync(1)
-
-    flag++;
-  }
-}
-const allLightsOff = () => {
-  red.writeSync(0)
-  yellow.writeSync(0)
-  green.writeSync(0)
-}
-
-// Handle Ctrl+C exit cleanly 
-process.on('SIGINT', () => {
-  allLightsOff()
-  process.exit()
-})
-
 const getImageInDb = async () => {
   const storageRef = sRef(storage, `image.jpg`);
   getBytes(storageRef).then((snapshot) => {
@@ -123,7 +81,7 @@ const getImageInDb = async () => {
 
 
 setupLights();
-setInterval(async function () {
+setInterval(function () {
   let rawData = fs.readFileSync("trafic_light_update.json")
   let values = JSON.parse(rawData)
   set(ref(database, "lightOneInterval"), parseFloat(values?.lightOneInterval));
@@ -134,19 +92,18 @@ setInterval(async function () {
   set(ref(database, "numCarsTwo"), parseFloat(values?.numCarsTwo));
   set(ref(database, "numCarsThree"), parseFloat(values?.numCarsThree));
   set(ref(database, "numCarsFour"), parseFloat(values?.numCarsFour));
-  get(ref(database)).then((snapshot) => {
-    let databaseValues = snapshot.val()
-    intervals = [
-      databaseValues.lightOneInterval,
-      databaseValues.lightTwoInterval,
-      databaseValues.lightThreeInterval,
-      databaseValues.lightFourInterval
-    ]
-    if (snapshot.val().useEmergPath === true) {
-      //do something, this already gets the new path as well
-      //probably just set the path
-    }
-  });
+  // get(ref(database)).then((snapshot) => {
+  //   let databaseValues = snapshot.val()
+  //   intervals = [
+  //     databaseValues.lightOneInterval,
+  //     databaseValues.lightTwoInterval,
+  //     databaseValues.lightThreeInterval,
+  //     databaseValues.lightFourInterval
+  //   ]
+  //   if (snapshot.val().useEmergPath === true) {
+  //     //do something, this already gets the new path as well
+  //     //probably just set the path
+  //   }
+  // });
   getImageInDb();
-  await runLights();
 }, 5000);
