@@ -2,6 +2,7 @@
   "dependencies": {
     "base64-to-image": "^1.0.2",
     "firebase": "^9.20.0",
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "onoff": "^6.0.3"
   }
 }
