@@ -80,7 +80,6 @@ const getImageInDb = async () => {
 // })
 
 
-setupLights();
 setInterval(function () {
   let rawData = fs.readFileSync("trafic_light_update.json")
   let values = JSON.parse(rawData)
