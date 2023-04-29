@@ -91,7 +91,7 @@ const setupLights = async () => {
 const runLights = async () => {
     while (true) {
         let intervals = []
-        get(ref(database)).then((snapshot) => {
+        await get(ref(database)).then((snapshot) => {
             console.log(snapshot.val().lightOneInterval)
             intervals = [
                 snapshot.val().lightOneInterval,
