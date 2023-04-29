@@ -28,9 +28,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = getDatabase();
 const storage = getStorage();
-//creating a root reference
-// const storage = getStorage(firebase);
-let storeImage = "";
+let setInt = setInterval()
 
 const getImageInDb = async () => {
   const storageRef = sRef(storage, `image.jpg`);
@@ -48,6 +46,16 @@ const getImageInDb = async () => {
   });
 
 };
+
+// onValue(ref(database, "emergExists"), (snapshot) => {
+//   if (snapshot.val() === true) {
+//     setInt = setInterval(function () {
+//       set(ref(database, "emergExists"), false)
+//     }, 10000)
+//   }
+// })
+
+
 
 setInterval(function () {
   set(ref(database, "lightOneInterval"), 0.5);
