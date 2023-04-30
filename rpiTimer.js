@@ -91,17 +91,17 @@ const setupLights = async () => {
 const runLights = async () => {
     while (true) {
         let intervals = []
-        await get(ref(database)).then((snapshot) => {
-            console.log(snapshot.val().lightOneInterval)
-            intervals = [
-                snapshot.val().lightOneInterval,
-                snapshot.val().lightTwoInterval,
-                snapshot.val().lightThreeInterval,
-                snapshot.val().lightFourInterval
-            ]
-        });
         // console.log(intervals)
         for (let i = 0; i < 4; i++) {
+            await get(ref(database)).then((snapshot) => {
+                console.log(snapshot.val().lightOneInterval)
+                intervals = [
+                    snapshot.val().lightOneInterval,
+                    snapshot.val().lightTwoInterval,
+                    snapshot.val().lightThreeInterval,
+                    snapshot.val().lightFourInterval
+                ]
+            });
             if (i === 0) {
                 red1.writeSync(1)
                 red2.writeSync(1)
