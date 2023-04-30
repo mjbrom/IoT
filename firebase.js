@@ -54,18 +54,43 @@ const getImageInDb = async () => {
 //   }
 // })
 
+let rawData = fs.readFileSync("trafic_light_update.json")
+let values = JSON.parse(rawData)
+set(ref(database, "lightOneInterval"), parseFloat(values?.lightOneInterval));
+set(ref(database, "lightTwoInterval"), parseFloat(values?.lightTwoInterval));
+set(ref(database, "lightThreeInterval"), parseFloat(values?.lightThreeInterval));
+set(ref(database, "lightFourInterval"), parseFloat(values?.lightFourInterval));
+set(ref(database, "numCarsOne"), parseFloat(values?.numCarsOne));
+set(ref(database, "numCarsTwo"), parseFloat(values?.numCarsTwo));
+set(ref(database, "numCarsThree"), parseFloat(values?.numCarsThree));
+set(ref(database, "numCarsFour"), parseFloat(values?.numCarsFour));
+
+fs.watch("./trafic_light_update.json", (event, filename) => {
+  if (filename) {
+    let raw = fs.readFileSync("trafic_light_update.json")
+    let dbValues = JSON.parse(raw)
+    set(ref(database, "lightOneInterval"), parseFloat(dbValues?.lightOneInterval));
+    set(ref(database, "lightTwoInterval"), parseFloat(dbValues?.lightTwoInterval));
+    set(ref(database, "lightThreeInterval"), parseFloat(dbValues?.lightThreeInterval));
+    set(ref(database, "lightFourInterval"), parseFloat(dbValues?.lightFourInterval));
+    set(ref(database, "numCarsOne"), parseFloat(dbValues?.numCarsOne));
+    set(ref(database, "numCarsTwo"), parseFloat(dbValues?.numCarsTwo));
+    set(ref(database, "numCarsThree"), parseFloat(dbValues?.numCarsThree));
+    set(ref(database, "numCarsFour"), parseFloat(dbValues?.numCarsFour));
+  }
+})
 
 setInterval(function () {
-  let rawData = fs.readFileSync("trafic_light_update.json")
-  let values = JSON.parse(rawData)
-  set(ref(database, "lightOneInterval"), parseFloat(values?.lightOneInterval));
-  set(ref(database, "lightTwoInterval"), parseFloat(values?.lightTwoInterval));
-  set(ref(database, "lightThreeInterval"), parseFloat(values?.lightThreeInterval));
-  set(ref(database, "lightFourInterval"), parseFloat(values?.lightFourInterval));
-  set(ref(database, "numCarsOne"), parseFloat(values?.numCarsOne));
-  set(ref(database, "numCarsTwo"), parseFloat(values?.numCarsTwo));
-  set(ref(database, "numCarsThree"), parseFloat(values?.numCarsThree));
-  set(ref(database, "numCarsFour"), parseFloat(values?.numCarsFour));
+  // let rawData = fs.readFileSync("trafic_light_update.json")
+  // let values = JSON.parse(rawData)
+  // set(ref(database, "lightOneInterval"), parseFloat(values?.lightOneInterval));
+  // set(ref(database, "lightTwoInterval"), parseFloat(values?.lightTwoInterval));
+  // set(ref(database, "lightThreeInterval"), parseFloat(values?.lightThreeInterval));
+  // set(ref(database, "lightFourInterval"), parseFloat(values?.lightFourInterval));
+  // set(ref(database, "numCarsOne"), parseFloat(values?.numCarsOne));
+  // set(ref(database, "numCarsTwo"), parseFloat(values?.numCarsTwo));
+  // set(ref(database, "numCarsThree"), parseFloat(values?.numCarsThree));
+  // set(ref(database, "numCarsFour"), parseFloat(values?.numCarsFour));
   // get(ref(database)).then((snapshot) => {
   //   let databaseValues = snapshot.val()
   //   intervals = [
