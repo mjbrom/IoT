@@ -72,7 +72,7 @@ fs.watch("./trafic_light_update.json", (event, filename) => {
   }
 })
 
-setInterval(function () {
+setInterval(async function () {
   // let rawData = fs.readFileSync("trafic_light_update.json")
   // let values = JSON.parse(rawData)
   // set(ref(database, "lightOneInterval"), parseFloat(values?.lightOneInterval));
@@ -96,5 +96,15 @@ setInterval(function () {
   //     //probably just set the path
   //   }
   // });
+  await get(ref(database)).then((snapshot) => {
+    const jsonString = JSON.stringify(snapshot.val())
+    fs.writeFile('./dbValues.json', jsonString, err => {
+      if (err) {
+        console.log('Error writing file', err)
+      } else {
+        console.log('Successfully wrote file')
+      }
+    })
+  })
   getImageInDb();
 }, 10000);
