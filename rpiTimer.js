@@ -70,6 +70,23 @@ const sleep = (howLong) => {
     })
 }
 
+onValue(ref(database, "emergExists"), async (snapshot) => {
+    if (snapshot.val() === true) {
+        red.writeSync(0)
+        red1.writeSync(1)
+        red2.writeSync(1)
+        red3.writeSync(1)
+        yellow1.writeSync(0)
+        yellow2.writeSync(0)
+        yellow3.writeSync(0)
+        green1.writeSync(0)
+        green2.writeSync(0)
+        green3.writeSync(0)
+        green.writeSync(1)
+        await sleep(10000)
+    }
+})
+
 const setupLights = async () => {
 
     for (let i = 0; i < 4; i++) {

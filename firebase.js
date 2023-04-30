@@ -46,14 +46,6 @@ const getImageInDb = async () => {
 
 };
 
-// onValue(ref(database, "emergExists"), (snapshot) => {
-//   if (snapshot.val() === true) {
-//     setInt = setInterval(function () {
-//       set(ref(database, "emergExists"), false)
-//     }, 10000)
-//   }
-// })
-
 let rawData = fs.readFileSync("trafic_light_update.json")
 let values = JSON.parse(rawData)
 set(ref(database, "lightOneInterval"), parseFloat(values?.lightOneInterval));
