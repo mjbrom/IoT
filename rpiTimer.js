@@ -84,11 +84,11 @@ onValue(ref(database, "emergExists"), async (snapshot) => {
         green3.writeSync(0)
         green.writeSync(1)
         await sleep(10000)
+        set(ref(database, "emergExists"), false)
     }
 })
 
 const setupLights = async () => {
-
     for (let i = 0; i < 4; i++) {
         if (i === 0) {
             red.writeSync(1)
