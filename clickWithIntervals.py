@@ -20,12 +20,13 @@ if not os.path.exists(FILE_PATH):
 
 # initalize camera
 camera.start_preview()
-sleep(10)
+sleep(5)
 
 # infinite loop to click pictures
 while True:
     #file_name = int(round(time.time()))
     file_name = "test"
+    camera.resolution = (80, 80)
     camera.capture(FILE_PATH + '/' + str(file_name) + '.jpg')
     # click a picture every 5 seconds.
     sleep(5)
