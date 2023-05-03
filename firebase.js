@@ -9,10 +9,10 @@ const {
   push,
   child,
 } = require("firebase/database");
-const { getStorage, getDownloadURL } = require("firebase/storage");
+const { getStorage, getDownloadURL, getBlob, getBytes } = require("firebase/storage");
 const { ref: sRef } = require("firebase/storage");
-// var sadbed = require("./random.jpg");
-// const { getImageInDb } = require("./storage");
+const fs = require("fs")
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDW5f707W16ftUpvJ7h1n-M2GrM-hFzZZw",
@@ -27,33 +27,84 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = getDatabase();
 const storage = getStorage();
-//creating a root reference
-// const storage = getStorage(firebase);
-let storeImage = "";
-
+// let databaseValues = {};
+// let setInt = setInterval()
 const getImageInDb = async () => {
   const storageRef = sRef(storage, `image.jpg`);
-  getDownloadURL(storageRef).then((url) => {
-    console.log(url);
-    storeImage = url;
+  getBytes(storageRef).then((snapshot) => {
+    var imageBuffer = new Uint8Array(snapshot)
+    fs.writeFile('./images/image.jpg', Buffer.from(imageBuffer), function (err) {
+      if (err) {
+        // fut.throw(err);
+        console.log(err)
+      } else {
+        // fut.return(chunk.length);
+        console.log("File created!")
+      }
+    });
   });
+
 };
 
-setInterval(function () {
-  set(ref(database, "lightOneInterval"), 0.5);
-  set(ref(database, "lightTwoInterval"), 0.5);
-  set(ref(database, "lightThreeInterval"), 0.5);
-  set(ref(database, "lightFourInterval"), 0.5);
-  set(ref(database, "numCarsOne"), 0.5);
-  set(ref(database, "numCarsTwo"), 0.5);
-  set(ref(database, "numCarsThree"), 0.5);
-  set(ref(database, "numCarsFour"), 0.5);
-  get(ref(database)).then((snapshot) => {
-    console.log(snapshot.val().useEmergPath);
-    if (snapshot.val().useEmergPath === true) {
-      //do something, this already gets the new path as well
-      //probably just set the path
-    }
-  });
+let rawData = fs.readFileSync("trafic_light_update.json")
+let values = JSON.parse(rawData)
+set(ref(database, "lightOneInterval"), parseFloat(values?.lightOneInterval));
+set(ref(database, "lightTwoInterval"), parseFloat(values?.lightTwoInterval));
+set(ref(database, "lightThreeInterval"), parseFloat(values?.lightThreeInterval));
+set(ref(database, "lightFourInterval"), parseFloat(values?.lightFourInterval));
+set(ref(database, "numCarsOne"), parseFloat(values?.numCarsOne));
+set(ref(database, "numCarsTwo"), parseFloat(values?.numCarsTwo));
+set(ref(database, "numCarsThree"), parseFloat(values?.numCarsThree));
+set(ref(database, "numCarsFour"), parseFloat(values?.numCarsFour));
+
+fs.watch("./trafic_light_update.json", (event, filename) => {
+  if (filename) {
+    let raw = fs.readFileSync("trafic_light_update.json")
+    let dbValues = JSON.parse(raw)
+    set(ref(database, "lightOneInterval"), parseFloat(dbValues?.lightOneInterval));
+    set(ref(database, "lightTwoInterval"), parseFloat(dbValues?.lightTwoInterval));
+    set(ref(database, "lightThreeInterval"), parseFloat(dbValues?.lightThreeInterval));
+    set(ref(database, "lightFourInterval"), parseFloat(dbValues?.lightFourInterval));
+    set(ref(database, "numCarsOne"), parseFloat(dbValues?.numCarsOne));
+    set(ref(database, "numCarsTwo"), parseFloat(dbValues?.numCarsTwo));
+    set(ref(database, "numCarsThree"), parseFloat(dbValues?.numCarsThree));
+    set(ref(database, "numCarsFour"), parseFloat(dbValues?.numCarsFour));
+  }
+})
+
+setInterval(async function () {
+  // let rawData = fs.readFileSync("trafic_light_update.json")
+  // let values = JSON.parse(rawData)
+  // set(ref(database, "lightOneInterval"), parseFloat(values?.lightOneInterval));
+  // set(ref(database, "lightTwoInterval"), parseFloat(values?.lightTwoInterval));
+  // set(ref(database, "lightThreeInterval"), parseFloat(values?.lightThreeInterval));
+  // set(ref(database, "lightFourInterval"), parseFloat(values?.lightFourInterval));
+  // set(ref(database, "numCarsOne"), parseFloat(values?.numCarsOne));
+  // set(ref(database, "numCarsTwo"), parseFloat(values?.numCarsTwo));
+  // set(ref(database, "numCarsThree"), parseFloat(values?.numCarsThree));
+  // set(ref(database, "numCarsFour"), parseFloat(values?.numCarsFour));
+  // get(ref(database)).then((snapshot) => {
+  //   let databaseValues = snapshot.val()
+  //   intervals = [
+  //     databaseValues.lightOneInterval,
+  //     databaseValues.lightTwoInterval,
+  //     databaseValues.lightThreeInterval,
+  //     databaseValues.lightFourInterval
+  //   ]
+  //   if (snapshot.val().useEmergPath === true) {
+  //     //do something, this already gets the new path as well
+  //     //probably just set the path
+  //   }
+  // });
+  await get(ref(database)).then((snapshot) => {
+    const jsonString = JSON.stringify(snapshot.val())
+    fs.writeFile('./dbValues.json', jsonString, err => {
+      if (err) {
+        console.log('Error writing file', err)
+      } else {
+        console.log('Successfully wrote file')
+      }
+    })
+  })
   getImageInDb();
-}, 5000);
+}, 10000);
