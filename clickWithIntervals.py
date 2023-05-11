@@ -26,7 +26,7 @@ sleep(5)
 while True:
     #file_name = int(round(time.time()))
     file_name = "test"
-    camera.resolution = (80, 80)
+    camera.resolution = (256, 256)
     camera.capture(FILE_PATH + '/' + str(file_name) + '.jpg')
     # click a picture every 5 seconds.
     sleep(5)
